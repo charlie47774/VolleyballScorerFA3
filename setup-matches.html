@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup Matches — RGC Volleyball Scorekeeper</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h1>Setup Matches</h1>
+      <a href="home.html" class="topbar-close">✕</a>
+    </div>
+    <div class="page-content" style="max-width: 600px;">
+      <form id="setup-form">
+        <div class="form-section">
+          <div class="form-section-title">Teams</div>
+          <div class="form-field">
+            <label for="team-a">Team A</label>
+            <select id="team-a" required></select>
+          </div>
+          <div class="form-field">
+            <label for="team-b">Team B</label>
+            <select id="team-b" required></select>
+          </div>
+          <p class="hint-text" id="no-teams-hint" style="display:none;">
+            No teams yet — add some in Options → Manage Teams, Divisions &amp; Courts.
+          </p>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Division</div>
+          <div class="form-field">
+            <select id="division" required></select>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Court</div>
+          <div class="form-field">
+            <select id="court" required></select>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Match Time</div>
+          <div class="form-field">
+            <input type="datetime-local" id="match-time" required />
+          </div>
+        </div>
+
+        <p id="form-error" class="error-text hidden"></p>
+
+        <button type="submit" id="save-btn" class="btn btn-primary btn-block btn-large">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/setup-matches.js"></script>
+</body>
+</html>

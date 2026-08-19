@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home — RGC Volleyball Scorekeeper</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="page-content">
+      <div class="home-grid">
+        <div class="home-main">
+          <h1 id="greeting">Good Morning</h1>
+
+          <div class="card">
+            <div class="card-header">
+              <span id="match-count-label">0 Upcoming Matches</span>
+              <span class="muted" id="live-count-label">0/3 in Live View</span>
+            </div>
+            <hr class="card-divider" />
+            <div id="matches-list" class="matches-list-scroll">
+              <p class="card-empty">Loading…</p>
+            </div>
+            <p id="home-error" class="error-text hidden" style="padding: 0 20px 16px;"></p>
+          </div>
+        </div>
+
+        <nav class="home-nav">
+          <a class="btn btn-pill" href="setup-matches.html">Setup Matches</a>
+          <a class="btn btn-pill" href="current-matches.html">Score Matches</a>
+          <a class="btn btn-pill" href="live-view.html" target="_blank" rel="noopener">Live View</a>
+          <a class="btn btn-pill" href="previous-matches.html">Past Matches</a>
+          <a class="btn btn-pill" href="options.html">Options</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/home.js"></script>
+</body>
+</html>

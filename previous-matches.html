@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Previous Matches — RGC Volleyball Scorekeeper</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-box {
+      background: var(--color-card);
+      border-radius: 16px;
+      width: min(420px, 90vw);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h1>Previous Matches</h1>
+      <a href="home.html" class="topbar-close">✕</a>
+    </div>
+    <div class="page-content">
+      <div id="matches-list">
+        <p class="hint-text">Loading…</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="detail-modal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="topbar">
+        <h1 id="detail-title">Match Detail</h1>
+        <button id="detail-close" class="topbar-close">✕</button>
+      </div>
+      <ul class="row-list" id="detail-sets-list"></ul>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/previous-matches.js"></script>
+</body>
+</html>

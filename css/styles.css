@@ -1,0 +1,768 @@
+/*
+  styles.css
+  Shared design system for the RGC Volleyball Scorekeeper web app —
+  mirrors the look of the SwiftUI iPad app: grouped gray background,
+  rounded bordered cards, pill buttons, form sections.
+*/
+
+:root {
+  --color-bg: #f2f2f7;
+  --color-card: #ffffff;
+  --color-card-secondary: #efeff4;
+  --color-border: rgba(60, 60, 67, 0.29);
+  --color-text: #1c1c1e;
+  --color-text-secondary: #6c6c70;
+  --color-accent: #007aff;
+  --color-green: #34c759;
+  --color-orange: #ff9500;
+  --color-red: #ff3b30;
+  --color-blue: #007aff;
+  --radius-card: 14px;
+  --radius-button: 12px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ---------- Layout shells ---------- */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+  padding: 40px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.centered-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+/* ---------- Top bar (used on sub-screens, mirrors the "x" dismiss toolbar) ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-card);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar h1 {
+  font-size: 20px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.topbar-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-card-secondary);
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topbar-close:hover {
+  background: var(--color-border);
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  background: var(--color-card-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  font-weight: 600;
+}
+
+.card-header .muted {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 0;
+}
+
+.card-empty {
+  padding: 20px;
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--radius-button);
+  border: 1px solid var(--color-border);
+  background: var(--color-card-secondary);
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn:hover {
+  background: var(--color-border);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #0067d6;
+}
+
+.btn-destructive {
+  background: transparent;
+  border-color: var(--color-red);
+  color: var(--color-red);
+}
+
+.btn-destructive:hover {
+  background: rgba(255, 59, 48, 0.08);
+}
+
+.btn-success {
+  border-color: var(--color-green);
+  color: var(--color-green);
+}
+
+.btn-warning {
+  border-color: var(--color-orange);
+  color: var(--color-orange);
+}
+
+.btn-tint-blue {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+}
+
+.btn-large {
+  padding: 14px 24px;
+  font-size: 16px;
+  border-radius: var(--radius-button);
+}
+
+.btn-pill {
+  border-radius: var(--radius-button);
+  padding: 14px 20px;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 18px;
+}
+
+/* ---------- Forms ---------- */
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+.form-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin: 0 0 8px 4px;
+}
+
+.form-field {
+  margin-bottom: 12px;
+}
+
+.form-field label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="datetime-local"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  font-size: 15px;
+  color: var(--color-text);
+  font-family: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.error-text {
+  color: var(--color-red);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.hint-text {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.badge-live {
+  color: var(--color-red);
+  background: rgba(255, 59, 48, 0.1);
+}
+
+.badge-scheduled {
+  color: var(--color-text-secondary);
+  background: rgba(108, 108, 112, 0.1);
+}
+
+.badge-completed {
+  color: var(--color-green);
+  background: rgba(52, 199, 89, 0.1);
+}
+
+.badge-live-view {
+  color: var(--color-blue);
+  background: rgba(0, 122, 255, 0.1);
+}
+
+/* ---------- List rows (matches, teams, divisions, courts) ---------- */
+
+.row-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border);
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.row-item:last-child {
+  border-bottom: none;
+}
+
+.row-item.clickable {
+  cursor: pointer;
+}
+
+.row-item.clickable:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.row-title {
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  flex-wrap: wrap;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.row-view-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* ---------- Login screen ---------- */
+
+.login-shell {
+  display: flex;
+  width: min(900px, 92vw);
+  background: var(--color-card);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+.login-branding {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 48px;
+  text-align: center;
+  background: var(--color-card-secondary);
+}
+
+.login-branding .logo-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(0, 122, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+.login-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: 48px;
+}
+
+.login-form h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ---------- Home screen ---------- */
+
+.home-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.home-main {
+  flex: 1;
+  min-width: 380px;
+}
+
+.home-main h1 {
+  font-size: 34px;
+  margin: 0 0 20px;
+}
+
+.home-nav {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.matches-list-scroll {
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+/* ---------- Court / scoring grid ---------- */
+
+.court-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.court-card {
+  background: var(--color-card-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.court-card:hover {
+  transform: translateY(-2px);
+}
+
+.court-card h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.court-card .empty {
+  color: var(--color-text-secondary);
+}
+
+.team-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.team-mini .name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.team-mini .score {
+  font-size: 34px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.set-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.set-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-text-secondary);
+}
+
+.set-dot.filled {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* ---------- Court scoring screen ---------- */
+
+.scoring-panels {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  padding: 24px 0;
+  flex-wrap: wrap;
+}
+
+.scoring-panel {
+  flex: 1;
+  min-width: 280px;
+  max-width: 420px;
+  background: var(--color-card-secondary);
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.scoring-panel .team-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.scoring-panel .score {
+  font-size: 96px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.scoring-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.score-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.score-btn.plus {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.score-btn.minus {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.sets-history-strip {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sets-history-strip .set-chip {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--color-card-secondary);
+  text-align: center;
+  font-size: 13px;
+}
+
+.scoring-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding: 24px 0;
+  flex-wrap: wrap;
+}
+
+/* ---------- Live View (full screen, dark) ---------- */
+
+.live-view-body {
+  background: #000;
+  min-height: 100vh;
+  margin: 0;
+  color: #fff;
+}
+
+.live-view-grid {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  gap: 24px;
+  padding: 32px;
+}
+
+.live-card {
+  flex: 1;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2vw, 24px);
+  padding: clamp(20px, 4vw, 56px);
+  text-align: center;
+}
+
+.live-card .court-label {
+  font-size: clamp(14px, 1.6vw, 26px);
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.live-card .team-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1vw, 14px);
+}
+
+.live-card .team-name {
+  font-size: clamp(20px, 3.2vw, 46px);
+  font-weight: 600;
+}
+
+.live-card .team-score {
+  font-size: clamp(64px, 12vw, 260px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.live-card hr {
+  width: 100%;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.live-view-empty {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.live-view-close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* ---------- Misc ---------- */
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 24px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spacer { flex: 1; }
+
+.hidden { display: none !important; }

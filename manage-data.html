@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Data — RGC Volleyball Scorekeeper</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h1>Manage Data</h1>
+      <a href="options.html" class="topbar-close">✕</a>
+    </div>
+    <div class="page-content" style="max-width: 700px;">
+
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">Teams</div>
+        <hr class="card-divider" />
+        <ul class="row-list" id="teams-list"></ul>
+        <div style="padding: 16px 20px; display:flex; flex-direction:column; gap:10px;">
+          <input type="text" id="new-team-name" placeholder="Team name" />
+          <select id="new-team-division"><option value="">Division (optional)</option></select>
+          <button id="add-team-btn" class="btn btn-primary">Add Team</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">Divisions</div>
+        <hr class="card-divider" />
+        <ul class="row-list" id="divisions-list"></ul>
+        <div style="padding: 16px 20px; display:flex; flex-direction:column; gap:10px;">
+          <input type="text" id="new-division-name" placeholder="Division name (e.g. Division 1)" />
+          <input type="text" id="new-division-age" placeholder="Age group (e.g. U18)" />
+          <button id="add-division-btn" class="btn btn-primary">Add Division</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">Courts</div>
+        <hr class="card-divider" />
+        <ul class="row-list" id="courts-list"></ul>
+        <div style="padding: 16px 20px; display:flex; flex-direction:column; gap:10px;">
+          <input type="text" id="new-court-name" placeholder="Court name (e.g. Court 1)" />
+          <input type="text" id="new-court-location" placeholder="Location (optional)" />
+          <button id="add-court-btn" class="btn btn-primary">Add Court</button>
+        </div>
+      </div>
+
+      <p id="manage-error" class="error-text hidden"></p>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/manage-data.js"></script>
+</body>
+</html>

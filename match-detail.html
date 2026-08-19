@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Match Detail — RGC Volleyball Scorekeeper</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h1 id="page-title">Match Detail</h1>
+      <a href="home.html" class="topbar-close">✕</a>
+    </div>
+    <div class="page-content" style="max-width: 600px;">
+
+      <div class="form-section">
+        <div class="form-section-title">Status</div>
+        <div class="card" style="padding: 16px 20px; display:flex; flex-direction:column; gap:8px;">
+          <div id="status-label"></div>
+          <div id="live-view-label" class="badge badge-live-view hidden" style="width:fit-content;">📡 Tagged for Live View</div>
+        </div>
+      </div>
+
+      <form id="edit-form">
+        <div class="form-section">
+          <div class="form-section-title">Teams</div>
+          <div class="form-field">
+            <label for="team-a">Team A</label>
+            <select id="team-a" required></select>
+          </div>
+          <div class="form-field">
+            <label for="team-b">Team B</label>
+            <select id="team-b" required></select>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Division</div>
+          <select id="division" required></select>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Court</div>
+          <select id="court" required></select>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Match Time</div>
+          <input type="datetime-local" id="match-time" required />
+        </div>
+
+        <button type="submit" id="save-btn" class="btn btn-primary btn-block btn-large">Save Changes</button>
+      </form>
+
+      <div class="form-section" style="margin-top: 24px;">
+        <div class="form-section-title">Match Actions</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <button id="start-btn" class="btn btn-success btn-block hidden">▶ Start Match</button>
+          <button id="live-toggle-btn" class="btn btn-tint-blue btn-block hidden">📡 Add to Live View</button>
+          <button id="complete-btn" class="btn btn-warning btn-block hidden">✓ Mark as Completed</button>
+        </div>
+      </div>
+
+      <button id="delete-btn" class="btn btn-destructive btn-block btn-large" style="margin-top: 24px;">Delete Match</button>
+
+      <p id="detail-error" class="error-text hidden"></p>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/match-detail.js"></script>
+</body>
+</html>

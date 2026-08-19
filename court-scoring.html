@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Court Scoring — RGC Volleyball Scorekeeper</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h1 id="court-title">Court</h1>
+      <a href="current-matches.html" class="topbar-close">✕</a>
+    </div>
+    <div class="page-content">
+      <div class="scoring-panels">
+        <div class="scoring-panel">
+          <div class="team-name" id="team-a-name">Team A</div>
+          <div class="score" id="team-a-score">0</div>
+          <div class="set-dots" id="team-a-dots"></div>
+          <div class="scoring-buttons">
+            <button class="score-btn plus" id="team-a-plus">+</button>
+            <button class="score-btn minus" id="team-a-minus">−</button>
+          </div>
+        </div>
+        <div class="scoring-panel">
+          <div class="team-name" id="team-b-name">Team B</div>
+          <div class="score" id="team-b-score">0</div>
+          <div class="set-dots" id="team-b-dots"></div>
+          <div class="scoring-buttons">
+            <button class="score-btn plus" id="team-b-plus">+</button>
+            <button class="score-btn minus" id="team-b-minus">−</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sets-history-strip" id="sets-history"></div>
+
+      <div class="scoring-actions">
+        <button id="undo-btn" class="btn">Undo Last Point</button>
+        <button id="end-match-btn" class="btn btn-destructive">End Match</button>
+        <button id="end-set-btn" class="btn btn-primary">End Set</button>
+      </div>
+
+      <p id="scoring-error" class="error-text hidden" style="text-align:center;"></p>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/court-scoring.js"></script>
+</body>
+</html>

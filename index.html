@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>RGC Volleyball Scorekeeper — Login</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="centered-page">
+    <div class="login-shell">
+      <div class="login-branding">
+        <div class="logo-circle">🏐</div>
+        <h1 style="margin:0;font-size:22px;">RGC Volleyball<br />Scorekeeper</h1>
+      </div>
+      <div class="login-form">
+        <h2>Login using organisation<br />login or Google</h2>
+
+        <form id="login-form">
+          <div class="form-field">
+            <input type="email" id="email" placeholder="Username / Email" autocomplete="username" required />
+          </div>
+          <div class="form-field">
+            <input type="password" id="password" placeholder="Password" autocomplete="current-password" required />
+          </div>
+          <button type="submit" id="login-btn" class="btn btn-primary btn-block btn-large">Login</button>
+        </form>
+
+        <div class="login-divider">or</div>
+
+        <button id="google-btn" class="btn btn-block btn-large">
+          <span>Login with Google</span>
+        </button>
+
+        <p id="error-text" class="error-text hidden"></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/login.js"></script>
+</body>
+</html>
