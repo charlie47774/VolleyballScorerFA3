@@ -12,10 +12,10 @@
 // Firestore Security Rules and Authentication settings.
 
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyD3DBNJTdcaL3A90Qe2pO8LgiFdVoGYWBg",
+  authDomain: "fa3-volleyball-scorer.firebaseapp.com",
+  projectId: "fa3-volleyball-scorer",
+  storageBucket: "fa3-volleyball-scorer.firebasestorage.app",
+  messagingSenderId: "179942348574",
+  appId: "1:179942348574:web:0cc62944a4d74e8c0b1b0f"
 };
