@@ -146,12 +146,18 @@ export async function deleteTeam(docId) {
 
 // ---------- Matches ----------
 
-/** Real-time listener over all matches (optionally filtered by status), ordered by match_time. */
+/** Real-time listener over all matches (optionally filtered by status), sorted by match_time. */
 export function listenToMatches(statusFilter, onChange) {
-  let q = query(collection(db, COLLECTIONS.matches), orderBy("match_time"));
-  if (statusFilter) {
-    q = query(collection(db, COLLECTIONS.matches), where("status", "==", statusFilter), orderBy("match_time"));
-  }
+  // Filtering by `status` and ordering by `match_time` at the same time
+  // needs a composite index that doesn't exist on a fresh Firebase project
+  // (Firestore throws "The query requires an index" until someone manually
+  // creates it in the console). Rather than depend on that being set up,
+  // only `where` on the server when there's a status filter, and always
+  // sort client-side — the match list is small enough that this costs
+  // nothing in practice and needs zero Firestore console configuration.
+  const q = statusFilter
+    ? query(collection(db, COLLECTIONS.matches), where("status", "==", statusFilter))
+    : query(collection(db, COLLECTIONS.matches));
   return onSnapshot(
     q,
     (snapshot) => {
@@ -163,6 +169,7 @@ export function listenToMatches(statusFilter, onChange) {
           console.warn("⚠️ listenToMatches: failed to decode", docSnap.id, error);
         }
       });
+      matches.sort((a, b) => a.matchTime - b.matchTime);
       onChange(matches);
     },
     (error) => {
@@ -175,13 +182,15 @@ export function listenToMatches(statusFilter, onChange) {
 }
 
 export async function fetchCompletedMatches() {
-  const q = query(
-    collection(db, COLLECTIONS.matches),
-    where("status", "==", "completed"),
-    orderBy("match_time", "desc")
-  );
+  // Deliberately a single-field `where` with no `orderBy` on a different
+  // field — combining the two needs a composite index that doesn't exist
+  // until someone manually creates it in the Firebase console (that's what
+  // threw "The query requires an index" on a fresh project). Sorting the
+  // small "completed matches" list client-side avoids needing that index
+  // at all.
+  const q = query(collection(db, COLLECTIONS.matches), where("status", "==", "completed"));
   const snapshot = await getDocs(q);
-  return snapshot.docs.map(matchFromDoc);
+  return snapshot.docs.map(matchFromDoc).sort((a, b) => b.matchTime - a.matchTime);
 }
 
 export async function fetchMatch(matchDocId) {

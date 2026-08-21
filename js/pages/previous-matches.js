@@ -15,22 +15,27 @@ modal.addEventListener("click", (e) => {
   if (e.target === modal) modal.classList.add("hidden");
 });
 
-const completed = await fetchCompletedMatches();
+try {
+  const completed = await fetchCompletedMatches();
 
-if (completed.length === 0) {
-  listEl.innerHTML = `<p class="hint-text">No completed matches yet.</p>`;
-} else {
-  const displays = await Promise.all(
-    completed.map(async (match) => ({ match, sets: await fetchSets(match.id) }))
-  );
+  if (completed.length === 0) {
+    listEl.innerHTML = `<p class="hint-text">No completed matches yet.</p>`;
+  } else {
+    const displays = await Promise.all(
+      completed.map(async (match) => ({ match, sets: await fetchSets(match.id) }))
+    );
 
-  listEl.innerHTML = `<ul class="row-list">${displays.map(rowHtml).join("")}</ul>`;
+    listEl.innerHTML = `<ul class="row-list">${displays.map(rowHtml).join("")}</ul>`;
 
-  displays.forEach((display) => {
-    document.getElementById(`detail-btn-${display.match.id}`)?.addEventListener("click", () => {
-      showDetail(display);
+    displays.forEach((display) => {
+      document.getElementById(`detail-btn-${display.match.id}`)?.addEventListener("click", () => {
+        showDetail(display);
+      });
     });
-  });
+  }
+} catch (error) {
+  console.warn("⚠️ previous-matches: failed to load completed matches", error);
+  listEl.innerHTML = `<p class="error-text">Couldn't load past matches: ${error.message}</p>`;
 }
 
 function rowHtml(display) {
