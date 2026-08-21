@@ -1,26 +1,41 @@
 /*
   styles.css
-  Shared design system for the RGC Volleyball Scorekeeper web app —
-  mirrors the look of the SwiftUI iPad app: grouped gray background,
-  rounded bordered cards, pill buttons, form sections.
+  Shared design system for the RGC Volleyball Scorekeeper web app.
+  Restyled for desktop-first use (with the iPad-landscape responsive rules
+  from before kept intact) — purple/blue accent palette layered on top of
+  the SAME screen structure as the original wireframes: grouped cards,
+  pill nav, form sections, court grid, dark full-screen Live View. Nothing
+  here changes what's on each screen, only how it looks.
 */
 
 :root {
-  --color-bg: #f2f2f7;
+  --color-bg: #f5f4fb;
   --color-card: #ffffff;
-  --color-card-secondary: #efeff4;
-  --color-border: rgba(60, 60, 67, 0.29);
-  --color-text: #1c1c1e;
-  --color-text-secondary: #6c6c70;
-  --color-accent: #007aff;
-  --color-green: #34c759;
-  --color-orange: #ff9500;
-  --color-red: #ff3b30;
-  --color-blue: #007aff;
-  --radius-card: 14px;
+  --color-card-secondary: #f7f6fd;
+  --color-border: rgba(76, 51, 148, 0.14);
+  --color-text: #1c1730;
+  --color-text-secondary: #6c6580;
+
+  --color-purple: #7c3aed;
+  --color-purple-dark: #5b21b6;
+  --color-blue: #2563eb;
+  --color-blue-dark: #1d4ed8;
+  --color-accent: var(--color-purple);
+
+  --color-green: #16a34a;
+  --color-orange: #ea8600;
+  --color-red: #e0293f;
+
+  --color-team-a: var(--color-purple);
+  --color-team-b: var(--color-blue);
+
+  --gradient-brand: linear-gradient(135deg, var(--color-purple) 0%, var(--color-blue) 100%);
+
+  --radius-card: 16px;
   --radius-button: 12px;
   --radius-pill: 999px;
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 2px rgba(43, 21, 92, 0.05), 0 1px 1px rgba(43, 21, 92, 0.03);
+  --shadow-card-lg: 0 12px 32px rgba(43, 21, 92, 0.10), 0 2px 8px rgba(43, 21, 92, 0.06);
   --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
 }
 
@@ -38,6 +53,13 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+body {
+  background-image:
+    radial-gradient(circle at 6% 0%, rgba(124, 58, 237, 0.06), transparent 40%),
+    radial-gradient(circle at 100% 12%, rgba(37, 99, 235, 0.05), transparent 45%);
+  background-attachment: fixed;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -53,6 +75,33 @@ a, button, .row-item.clickable, .court-card {
   touch-action: manipulation;
 }
 
+::selection {
+  background: rgba(124, 58, 237, 0.22);
+}
+
+/* Slim accent-tinted scrollbars — a small desktop-specific touch, no-op
+   on browsers/engines that don't support the WebKit scrollbar properties. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.28);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.45);
+  background-clip: padding-box;
+}
+
 /* ---------- Layout shells ---------- */
 
 .page {
@@ -63,17 +112,27 @@ a, button, .row-item.clickable, .court-card {
 
 .page-content {
   flex: 1;
-  padding: clamp(20px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(20px, 3vw, 44px);
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
 }
 
+/* .page-content centers its content block vertically in the leftover
+   space below the topbar — on a tall desktop window that stops a short
+   form or a handful of match rows from reading as "stuck to the top"
+   with a wall of empty space underneath. When content is tall enough to
+   fill (or exceed) the viewport on its own, this has no effect — it only
+   kicks in when there's real unused space to redistribute. */
+
 /* Give very large desktop monitors a bit more breathing room without
    letting content get uncomfortably wide on a laptop or iPad. */
 @media (min-width: 1600px) {
   .page-content {
-    max-width: 1440px;
+    max-width: 1480px;
   }
 }
 
@@ -91,18 +150,33 @@ a, button, .row-item.clickable, .court-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 16px 28px;
   border-bottom: 1px solid var(--color-border);
-  background: var(--color-card);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 -2px 0 0 transparent;
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--gradient-brand);
+  opacity: 0.55;
+}
+
 .topbar h1 {
   font-size: 20px;
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .topbar-close {
@@ -117,10 +191,12 @@ a, button, .row-item.clickable, .court-card {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .topbar-close:hover {
-  background: var(--color-border);
+  background: rgba(124, 58, 237, 0.12);
+  color: var(--color-purple);
 }
 
 .topbar-actions {
@@ -142,14 +218,15 @@ a, button, .row-item.clickable, .court-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  font-weight: 600;
+  padding: 18px 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .card-header .muted {
   font-size: 13px;
   color: var(--color-text-secondary);
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .card-divider {
@@ -173,21 +250,32 @@ a, button, .row-item.clickable, .court-card {
   padding: 12px 20px;
   border-radius: var(--radius-button);
   border: 1px solid var(--color-border);
-  background: var(--color-card-secondary);
+  background: var(--color-card);
   color: var(--color-text);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease, box-shadow 0.15s ease;
 }
 
 .btn:hover {
-  background: var(--color-border);
+  background: var(--color-card-secondary);
+  border-color: rgba(76, 51, 148, 0.26);
+}
+
+.btn:active {
+  transform: translateY(1px);
 }
 
 .btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+  transform: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-purple);
+  outline-offset: 2px;
 }
 
 .btn-block {
@@ -195,13 +283,15 @@ a, button, .row-item.clickable, .court-card {
 }
 
 .btn-primary {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: var(--gradient-brand);
+  border-color: transparent;
   color: #fff;
+  box-shadow: 0 6px 16px rgba(91, 33, 182, 0.28);
 }
 
 .btn-primary:hover {
-  background: #0067d6;
+  filter: brightness(1.06);
+  box-shadow: 0 8px 20px rgba(91, 33, 182, 0.34);
 }
 
 .btn-destructive {
@@ -211,7 +301,7 @@ a, button, .row-item.clickable, .court-card {
 }
 
 .btn-destructive:hover {
-  background: rgba(255, 59, 48, 0.08);
+  background: rgba(224, 41, 63, 0.08);
 }
 
 .btn-success {
@@ -219,14 +309,39 @@ a, button, .row-item.clickable, .court-card {
   color: var(--color-green);
 }
 
+.btn-success:hover {
+  background: rgba(22, 163, 74, 0.08);
+}
+
 .btn-warning {
   border-color: var(--color-orange);
   color: var(--color-orange);
 }
 
+.btn-warning:hover {
+  background: rgba(234, 134, 0, 0.08);
+}
+
 .btn-tint-blue {
-  border-color: var(--color-blue);
+  border-color: rgba(37, 99, 235, 0.4);
   color: var(--color-blue);
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.btn-tint-blue:hover {
+  background: rgba(37, 99, 235, 0.12);
+  border-color: var(--color-blue);
+}
+
+.btn-tint-purple {
+  border-color: rgba(124, 58, 237, 0.4);
+  color: var(--color-purple);
+  background: rgba(124, 58, 237, 0.06);
+}
+
+.btn-tint-purple:hover {
+  background: rgba(124, 58, 237, 0.12);
+  border-color: var(--color-purple);
 }
 
 .btn-large {
@@ -240,7 +355,7 @@ a, button, .row-item.clickable, .court-card {
   padding: 14px 20px;
   width: 100%;
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .btn-icon {
@@ -258,10 +373,11 @@ a, button, .row-item.clickable, .court-card {
 }
 
 .form-section-title {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+  color: var(--color-purple-dark);
   margin: 0 0 8px 4px;
 }
 
@@ -290,11 +406,13 @@ textarea {
   font-size: 15px;
   color: var(--color-text);
   font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 input:focus, select:focus, textarea:focus {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--color-purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
 .error-text {
@@ -322,22 +440,22 @@ input:focus, select:focus, textarea:focus {
 
 .badge-live {
   color: var(--color-red);
-  background: rgba(255, 59, 48, 0.1);
+  background: rgba(224, 41, 63, 0.1);
 }
 
 .badge-scheduled {
   color: var(--color-text-secondary);
-  background: rgba(108, 108, 112, 0.1);
+  background: rgba(108, 101, 128, 0.12);
 }
 
 .badge-completed {
   color: var(--color-green);
-  background: rgba(52, 199, 89, 0.1);
+  background: rgba(22, 163, 74, 0.1);
 }
 
 .badge-live-view {
   color: var(--color-blue);
-  background: rgba(0, 122, 255, 0.1);
+  background: rgba(37, 99, 235, 0.1);
 }
 
 /* ---------- List rows (matches, teams, divisions, courts) ---------- */
@@ -368,7 +486,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .row-item.clickable:hover {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(124, 58, 237, 0.05);
 }
 
 .row-main {
@@ -379,7 +497,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .row-title {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15px;
   white-space: nowrap;
   overflow: hidden;
@@ -404,8 +522,8 @@ input:focus, select:focus, textarea:focus {
 
 .row-view-link {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--color-accent);
+  font-weight: 700;
+  color: var(--color-purple);
   white-space: nowrap;
 }
 
@@ -413,12 +531,12 @@ input:focus, select:focus, textarea:focus {
 
 .login-shell {
   display: flex;
-  width: min(900px, 92vw);
+  width: min(940px, 92vw);
   max-height: 92vh;
   background: var(--color-card);
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-card-lg), 0 30px 70px rgba(43, 21, 92, 0.16);
 }
 
 /* Short/narrow viewports (iPad portrait, small laptop windows) — stack
@@ -455,14 +573,33 @@ input:focus, select:focus, textarea:focus {
   gap: 16px;
   padding: 48px;
   text-align: center;
-  background: var(--color-card-secondary);
+  background: var(--gradient-brand);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-branding::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.16), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(255, 255, 255, 0.12), transparent 50%);
+}
+
+.login-branding > * {
+  position: relative;
 }
 
 .login-branding .logo-circle {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: rgba(0, 122, 255, 0.15);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -481,7 +618,7 @@ input:focus, select:focus, textarea:focus {
 .login-form h2 {
   margin: 0;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--color-text-secondary);
   text-align: center;
 }
@@ -516,8 +653,15 @@ input:focus, select:focus, textarea:focus {
 }
 
 .home-main h1 {
-  font-size: 34px;
+  font-size: clamp(30px, 3vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
   margin: 0 0 20px;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
 }
 
 .home-nav {
@@ -525,11 +669,11 @@ input:focus, select:focus, textarea:focus {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .matches-list-scroll {
-  max-height: 480px;
+  max-height: clamp(360px, 62vh, 720px);
   overflow-y: auto;
 }
 
@@ -569,7 +713,7 @@ input:focus, select:focus, textarea:focus {
 .court-card {
   background: var(--color-card-secondary);
   border: 1px solid var(--color-border);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 20px;
   min-height: 220px;
   display: flex;
@@ -578,16 +722,22 @@ input:focus, select:focus, textarea:focus {
   justify-content: center;
   gap: 12px;
   cursor: pointer;
-  transition: transform 0.1s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .court-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-lg);
+  border-color: rgba(124, 58, 237, 0.3);
 }
 
 .court-card h3 {
   margin: 0;
-  font-size: 15px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
 }
 
 .court-card .empty {
@@ -604,15 +754,24 @@ input:focus, select:focus, textarea:focus {
 
 .team-mini .name {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text-secondary);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
 }
 
 .team-mini .score {
   font-size: 34px;
-  font-weight: 700;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.team-mini:first-of-type .score {
+  color: var(--color-team-a);
+}
+
+.team-mini:last-of-type .score {
+  color: var(--color-team-b);
 }
 
 .set-dots {
@@ -624,12 +783,12 @@ input:focus, select:focus, textarea:focus {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 1.5px solid var(--color-text-secondary);
+  border: 1.5px solid var(--color-border);
 }
 
 .set-dot.filled {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: var(--gradient-brand);
+  border-color: transparent;
 }
 
 /* ---------- Court scoring screen ---------- */
@@ -647,22 +806,36 @@ input:focus, select:focus, textarea:focus {
   min-width: 280px;
   max-width: 420px;
   background: var(--color-card-secondary);
-  border-radius: 20px;
+  border-radius: 22px;
   padding: 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  border-top: 4px solid var(--color-team-a);
+  box-shadow: var(--shadow-card);
+}
+
+.scoring-panel:last-child {
+  border-top-color: var(--color-team-b);
 }
 
 .scoring-panel .team-name {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.scoring-panel:first-child .team-name {
+  color: var(--color-team-a);
+}
+
+.scoring-panel:last-child .team-name {
+  color: var(--color-team-b);
 }
 
 .scoring-panel .score {
   font-size: clamp(56px, 9vw, 96px);
-  font-weight: 700;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
@@ -679,11 +852,21 @@ input:focus, select:focus, textarea:focus {
   font-size: 24px;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.08s ease, filter 0.15s ease;
+}
+
+.score-btn:hover {
+  filter: brightness(1.08);
+}
+
+.score-btn:active {
+  transform: scale(0.94);
 }
 
 .score-btn.plus {
-  background: var(--color-accent);
+  background: var(--gradient-brand);
   color: #fff;
+  box-shadow: 0 6px 16px rgba(91, 33, 182, 0.3);
 }
 
 .score-btn.minus {
@@ -703,6 +886,7 @@ input:focus, select:focus, textarea:focus {
   padding: 8px 12px;
   border-radius: 10px;
   background: var(--color-card-secondary);
+  border: 1px solid var(--color-border);
   text-align: center;
   font-size: 13px;
 }
@@ -718,7 +902,7 @@ input:focus, select:focus, textarea:focus {
 /* ---------- Live View (full screen, dark) ---------- */
 
 .live-view-body {
-  background: #000;
+  background: radial-gradient(circle at 15% 0%, #241a45 0%, #0b0714 45%, #050308 100%);
   min-height: 100vh;
   margin: 0;
   color: #fff;
@@ -744,9 +928,9 @@ input:focus, select:focus, textarea:focus {
 .live-card {
   flex: 1;
   min-width: 0;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -754,14 +938,15 @@ input:focus, select:focus, textarea:focus {
   gap: clamp(12px, 2vw, 24px);
   padding: clamp(20px, 4vw, 56px);
   text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
 .live-card .court-label {
   font-size: clamp(14px, 1.6vw, 26px);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.55);
   text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
 .live-card .team-block {
@@ -773,12 +958,20 @@ input:focus, select:focus, textarea:focus {
 
 .live-card .team-name {
   font-size: clamp(20px, 3.2vw, 46px);
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.live-card .team-block:first-of-type .team-name {
+  color: #c4a3ff;
+}
+
+.live-card .team-block:last-of-type .team-name {
+  color: #8ab4ff;
 }
 
 .live-card .team-score {
   font-size: clamp(64px, 12vw, 260px);
-  font-weight: 700;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
@@ -786,7 +979,7 @@ input:focus, select:focus, textarea:focus {
 .live-card hr {
   width: 100%;
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .live-view-empty {
@@ -814,6 +1007,11 @@ input:focus, select:focus, textarea:focus {
   font-size: 20px;
   cursor: pointer;
   z-index: 20;
+  transition: background 0.15s ease;
+}
+
+.live-view-close:hover {
+  background: rgba(255, 255, 255, 0.22);
 }
 
 /* ---------- Misc ---------- */
@@ -822,7 +1020,7 @@ input:focus, select:focus, textarea:focus {
   width: 24px;
   height: 24px;
   border: 3px solid var(--color-border);
-  border-top-color: var(--color-accent);
+  border-top-color: var(--color-purple);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin: 24px auto;
