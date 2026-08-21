@@ -46,12 +46,20 @@ if (!match) {
   throw new Error("Match not found");
 }
 
-const [teams, divisions, courts, liveTagged] = await Promise.all([
+const [teams, divisions, courts, initialLiveTagged] = await Promise.all([
   fetchTeams(),
   fetchDivisions(),
   fetchCourts(),
   isLiveDisplay(matchDocId)
 ]);
+
+// A single mutable source of truth for the tag state, updated by the
+// toggle handler below and read by renderStatus() every time it runs —
+// previously renderStatus() read the one-time `isLiveDisplay` result
+// directly, so calling it again later (e.g. after Start/Complete) would
+// silently revert the Live View label/button to whatever it was when the
+// page first loaded, undoing whatever the toggle button had just done.
+let liveTaggedState = initialLiveTagged;
 
 pageTitle.textContent = `${match.teamA} vs ${match.teamB}`;
 
@@ -72,12 +80,15 @@ matchTimeInput.value = toDatetimeLocalValue(match.matchTime);
 function renderStatus() {
   const labelMap = { scheduled: "Scheduled", live: "Live", completed: "Completed" };
   statusLabel.innerHTML = `<strong>Status:</strong> ${labelMap[match.status] ?? match.status}`;
-  liveViewLabel.classList.toggle("hidden", !liveTagged);
+  liveViewLabel.classList.toggle("hidden", !liveTaggedState);
 
   startBtn.classList.toggle("hidden", match.status !== "scheduled");
-  liveToggleBtn.classList.toggle("hidden", match.status === "completed");
+  // Keep the toggle visible on a completed match if it's still tagged, so
+  // there's always a way to remove it from Live View — only hide it once
+  // completed AND already untagged, when there's nothing left to do here.
+  liveToggleBtn.classList.toggle("hidden", match.status === "completed" && !liveTaggedState);
   completeBtn.classList.toggle("hidden", match.status === "completed");
-  liveToggleBtn.textContent = liveTagged ? "📡 Remove from Live View" : "📡 Add to Live View";
+  liveToggleBtn.textContent = liveTaggedState ? "📡 Remove from Live View" : "📡 Add to Live View";
 }
 renderStatus();
 
@@ -141,13 +152,11 @@ completeBtn.addEventListener("click", async () => {
   }
 });
 
-let liveTaggedState = liveTagged;
 liveToggleBtn.addEventListener("click", async () => {
   try {
     await setLiveDisplay(matchDocId, !liveTaggedState);
     liveTaggedState = !liveTaggedState;
-    liveViewLabel.classList.toggle("hidden", !liveTaggedState);
-    liveToggleBtn.textContent = liveTaggedState ? "📡 Remove from Live View" : "📡 Add to Live View";
+    renderStatus();
   } catch (error) {
     showError(error.message);
   }

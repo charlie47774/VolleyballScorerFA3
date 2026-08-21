@@ -1,7 +1,8 @@
 // pages/live-view-config.js
-// Central place for a coordinator to see every non-completed match and
-// assign/remove it from the Live View (up to 3 at once), instead of having
-// to open each match's own detail screen one at a time.
+// Central place for a coordinator to see every match tagged for the Live
+// View — plus every not-yet-completed match available to tag — and
+// assign/remove it (up to 3 at once), instead of having to open each
+// match's own detail screen one at a time.
 
 import { requireAuth } from "../auth.js";
 import { listenToMatches, listenToLiveDisplayMatchIds, setLiveDisplay } from "../firestore.js";
@@ -15,11 +16,23 @@ const errorEl = document.getElementById("config-error");
 
 const MAX_LIVE = 3;
 
-let matches = [];
+// Keep the full unfiltered match list — which matches are shown is
+// recomputed on every render from `allMatches` + the current `liveIds`,
+// not decided once up front. That's what makes a completed-but-still-tagged
+// match keep showing here (with a Remove button) instead of disappearing
+// the moment it's marked Completed, which previously left no way to untag
+// it from this screen.
+let allMatches = [];
 let liveIds = new Set();
+
+function visibleMatches() {
+  return allMatches.filter((m) => m.status !== "completed" || liveIds.has(m.id));
+}
 
 function render() {
   countLabel.textContent = `${liveIds.size}/${MAX_LIVE} tagged`;
+
+  const matches = visibleMatches();
 
   if (matches.length === 0) {
     listEl.innerHTML = `<p class="card-empty">No matches yet. Create one from Setup Matches.</p>`;
@@ -76,7 +89,7 @@ function rowHtml(match) {
 }
 
 listenToMatches(null, (all) => {
-  matches = all.filter((m) => m.status !== "completed");
+  allMatches = all;
   render();
 });
 

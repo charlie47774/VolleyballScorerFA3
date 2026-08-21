@@ -651,8 +651,10 @@ input:focus, select:focus, textarea:focus {
 .home-grid {
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   gap: 32px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .home-main {
