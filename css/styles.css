@@ -136,6 +136,13 @@ a, button, .row-item.clickable, .court-card {
   }
 }
 
+/* Home is a dashboard people check repeatedly — it reads better pinned to
+   the top under the greeting than vertically centered like the one-off
+   form/detail screens. */
+.page-content-top {
+  justify-content: flex-start;
+}
+
 .centered-page {
   min-height: 100vh;
   display: flex;
@@ -352,10 +359,11 @@ a, button, .row-item.clickable, .court-card {
 
 .btn-pill {
   border-radius: var(--radius-button);
-  padding: 14px 20px;
+  padding: 22px 24px;
   width: 100%;
   text-align: center;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .btn-icon {
@@ -648,8 +656,9 @@ input:focus, select:focus, textarea:focus {
 }
 
 .home-main {
-  flex: 1;
+  flex: 1 1 460px;
   min-width: 380px;
+  max-width: 620px;
 }
 
 .home-main h1 {
@@ -665,11 +674,11 @@ input:focus, select:focus, textarea:focus {
 }
 
 .home-nav {
-  width: 280px;
+  width: 360px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .matches-list-scroll {
