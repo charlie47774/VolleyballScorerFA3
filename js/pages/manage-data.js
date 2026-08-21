@@ -1,5 +1,5 @@
 // pages/manage-data.js
-import { requireAuth } from "../auth.js";
+import { guardPage } from "../auth.js";
 import {
   fetchTeams, createTeam, deleteTeam,
   fetchDivisions, createDivision, deleteDivision,
@@ -7,7 +7,7 @@ import {
 } from "../firestore.js";
 import { escapeHtml } from "../utils.js";
 
-await requireAuth();
+await guardPage();
 
 const errorEl = document.getElementById("manage-error");
 function showError(message) {

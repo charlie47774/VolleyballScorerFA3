@@ -4,11 +4,11 @@
 // assign/remove it (up to 3 at once), instead of having to open each
 // match's own detail screen one at a time.
 
-import { requireAuth } from "../auth.js";
+import { guardPage } from "../auth.js";
 import { listenToMatches, listenToLiveDisplayMatchIds, setLiveDisplay } from "../firestore.js";
 import { formatDate, formatTime, escapeHtml, statusBadge } from "../utils.js";
 
-await requireAuth();
+await guardPage();
 
 const listEl = document.getElementById("matches-list");
 const countLabel = document.getElementById("live-count-label");

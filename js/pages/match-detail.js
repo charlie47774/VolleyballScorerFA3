@@ -2,7 +2,7 @@
 // Full view/edit screen for a single match — teams, division, court, time,
 // plus lifecycle actions (Start, tag for Live View, Complete, Delete).
 
-import { requireAuth } from "../auth.js";
+import { guardPage } from "../auth.js";
 import {
   fetchMatch,
   updateMatch,
@@ -16,7 +16,7 @@ import {
 } from "../firestore.js";
 import { getQueryParam, toDatetimeLocalValue, fromDatetimeLocalValue, escapeHtml } from "../utils.js";
 
-await requireAuth();
+await guardPage();
 
 const matchDocId = getQueryParam("id");
 if (!matchDocId) window.location.href = "home.html";

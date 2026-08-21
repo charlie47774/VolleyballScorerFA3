@@ -1,9 +1,9 @@
 // pages/setup-matches.js
-import { requireAuth } from "../auth.js";
+import { guardPage } from "../auth.js";
 import { fetchTeams, fetchDivisions, fetchCourts, createMatch } from "../firestore.js";
 import { toDatetimeLocalValue, fromDatetimeLocalValue, escapeHtml } from "../utils.js";
 
-await requireAuth();
+await guardPage();
 
 const teamASelect = document.getElementById("team-a");
 const teamBSelect = document.getElementById("team-b");

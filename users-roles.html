@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Users &amp; Roles — RGC Volleyball Scorekeeper</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <h1>Users &amp; Roles</h1>
+      <a href="options.html" class="topbar-close">✕</a>
+    </div>
+    <div class="page-content" style="max-width: 760px;">
+
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <span>Users</span>
+          <span class="muted">Role controls what each person can access</span>
+        </div>
+        <hr class="card-divider" />
+        <ul class="row-list" id="users-list">
+          <li class="row-item"><span class="hint-text">Loading…</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">Add User</div>
+        <hr class="card-divider" />
+        <div style="padding: 16px 20px; display:flex; flex-direction:column; gap:10px;">
+          <input type="email" id="new-user-email" placeholder="Email address (the one they'll sign in with)" />
+          <input type="text" id="new-user-first-name" placeholder="First name" />
+          <input type="text" id="new-user-last-name" placeholder="Last name (optional)" />
+          <select id="new-user-role">
+            <option value="admin">Admin — full access</option>
+            <option value="scorer">Scorer — Score Matches only</option>
+            <option value="live">Live — Live View only</option>
+          </select>
+          <button id="add-user-btn" class="btn btn-primary">Add User</button>
+        </div>
+      </div>
+
+      <p class="hint-text" style="margin-top: 16px; line-height: 1.5;">
+        This is the app's own user directory (the same <code>Officials</code> records
+        matched by email at sign-in, now with a role on each one) — not a live listing
+        of Firebase Authentication accounts, which Firebase's client SDK doesn't expose
+        to a front-end app like this one. Add someone here with the exact email they'll
+        sign in with; their role takes effect the next time they sign in.
+      </p>
+
+      <p id="users-error" class="error-text hidden"></p>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/users-roles.js"></script>
+</body>
+</html>

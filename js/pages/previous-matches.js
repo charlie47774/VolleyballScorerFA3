@@ -1,9 +1,9 @@
 // pages/previous-matches.js
-import { requireAuth } from "../auth.js";
+import { guardPage } from "../auth.js";
 import { fetchCompletedMatches, fetchSets } from "../firestore.js";
 import { escapeHtml } from "../utils.js";
 
-await requireAuth();
+await guardPage();
 
 const listEl = document.getElementById("matches-list");
 const modal = document.getElementById("detail-modal");

@@ -87,6 +87,47 @@ function setScoreFromDoc(docSnap) {
   };
 }
 
+// ---------- Officials / Users & Roles ----------
+// Note: this is the app's own user directory, not a live listing of
+// Firebase Authentication accounts — see js/pages/users-roles.js for why.
+
+export const ROLES = ["admin", "scorer", "live"];
+
+function officialFromDoc(docSnap) {
+  const data = docSnap.data();
+  return {
+    id: docSnap.id,
+    officialId: data.official_id,
+    email: data.email ?? "",
+    firstName: data.first_name ?? "",
+    lastName: data.last_name ?? "",
+    role: data.role || "admin"
+  };
+}
+
+export async function fetchOfficials() {
+  const snapshot = await getDocs(query(collection(db, COLLECTIONS.officials), orderBy("email")));
+  return snapshot.docs.map(officialFromDoc);
+}
+
+export async function createOfficial({ email, firstName, lastName, role }) {
+  return addDoc(collection(db, COLLECTIONS.officials), {
+    official_id: randomId(),
+    email: email.trim().toLowerCase(),
+    first_name: firstName || "",
+    last_name: lastName || "",
+    role: role || "admin"
+  });
+}
+
+export async function updateOfficialRole(officialDocId, role) {
+  await updateDoc(doc(db, COLLECTIONS.officials, officialDocId), { role });
+}
+
+export async function deleteOfficial(officialDocId) {
+  await deleteDoc(doc(db, COLLECTIONS.officials, officialDocId));
+}
+
 // ---------- Divisions ----------
 
 export async function fetchDivisions() {
@@ -196,6 +237,19 @@ export async function fetchCompletedMatches() {
 export async function fetchMatch(matchDocId) {
   const snapshot = await getDoc(doc(db, COLLECTIONS.matches, matchDocId));
   return snapshot.exists() ? matchFromDoc(snapshot) : null;
+}
+
+/** Real-time listener on a single match doc — used by Live View so a
+ *  match's status (e.g. going from "live" to "completed") shows up
+ *  immediately instead of only reflecting whatever it was when the match
+ *  was first tagged for display. */
+export function listenToMatch(matchDocId, onChange) {
+  const ref = doc(db, COLLECTIONS.matches, matchDocId);
+  return onSnapshot(
+    ref,
+    (snapshot) => onChange(snapshot.exists() ? matchFromDoc(snapshot) : null),
+    (error) => console.warn("⚠️ listenToMatch error:", error)
+  );
 }
 
 /** Creates a match + its starting Scores subdocument (one score record per match). */

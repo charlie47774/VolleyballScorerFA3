@@ -2,11 +2,28 @@
 // Wireframe: "Current Matches" — a grid of every court, live score or
 // "No Current Match". Clicking a court opens its Court Scoring screen.
 
-import { requireAuth } from "../auth.js";
+import { guardPage, signOut } from "../auth.js";
 import { fetchCourts, listenToMatches, listenToScore } from "../firestore.js";
 import { escapeHtml } from "../utils.js";
 
-await requireAuth();
+const session = await guardPage();
+
+// This is the scorer role's home base — but the topbar's ✕ normally links
+// to home.html, which a scorer can't open (guardPage would just bounce
+// them right back here). Repurpose it as Sign Out for anyone who isn't an
+// admin, so non-admin roles always have a way out of the app.
+if (session && session.role !== "admin") {
+  const closeBtn = document.querySelector(".topbar-close");
+  if (closeBtn) {
+    closeBtn.removeAttribute("href");
+    closeBtn.title = "Sign out";
+    closeBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      await signOut();
+      window.location.href = "index.html";
+    });
+  }
+}
 
 const gridEl = document.getElementById("court-grid");
 
@@ -50,7 +67,10 @@ function render() {
 }
 
 function teamMiniHtml(name, score, sets) {
-  const dots = [0, 1, 2]
+  // Best-of-3 (SETS_TO_WIN_MATCH = 2 in court-scoring.js) — a team never
+  // needs more than 2 set wins to take the match, so 2 dots is the whole
+  // possible range, not 3.
+  const dots = [0, 1]
     .map((i) => `<span class="set-dot ${i < sets ? "filled" : ""}"></span>`)
     .join("");
   return `

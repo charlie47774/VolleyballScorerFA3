@@ -1,9 +1,13 @@
 // pages/login.js
-import { signInWithEmail, signInWithGoogle, getCurrentUser } from "../auth.js";
+import { signInWithEmail, signInWithGoogle, getCurrentUser, fetchCurrentRole, landingPageForRole } from "../auth.js";
 
-// Already signed in? Skip straight to Home.
-getCurrentUser().then((user) => {
-  if (user) window.location.href = "home.html";
+// Already signed in? Skip straight to wherever this person's role lands
+// them (Home for admin, Score Matches for scorer, Live View for live).
+getCurrentUser().then(async (user) => {
+  if (user) {
+    const role = await fetchCurrentRole(user.email);
+    window.location.href = landingPageForRole(role);
+  }
 });
 
 const form = document.getElementById("login-form");
@@ -24,8 +28,9 @@ form.addEventListener("submit", async (event) => {
   try {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
-    await signInWithEmail(email, password);
-    window.location.href = "home.html";
+    const user = await signInWithEmail(email, password);
+    const role = await fetchCurrentRole(user.email);
+    window.location.href = landingPageForRole(role);
   } catch (error) {
     showError(error.message);
   } finally {
@@ -38,8 +43,9 @@ googleBtn.addEventListener("click", async () => {
   errorText.classList.add("hidden");
   googleBtn.disabled = true;
   try {
-    await signInWithGoogle();
-    window.location.href = "home.html";
+    const user = await signInWithGoogle();
+    const role = await fetchCurrentRole(user.email);
+    window.location.href = landingPageForRole(role);
   } catch (error) {
     showError(error.message);
   } finally {

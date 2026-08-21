@@ -69,3 +69,60 @@ export async function requireAuth() {
   }
   return user;
 }
+
+// ---------- Roles ----------
+// Three roles, driven entirely by the signed-in user's Officials.role field
+// (set from Options → Users & Roles): "admin" has full access; "scorer" is
+// locked to Score Matches (the court grid + the scoring screen); "live" is
+// locked to the Live View scoreboard and lands there straight from login.
+// A user with no matching Officials record, or no role set on it yet,
+// defaults to "admin" — so existing setups and anyone not yet assigned a
+// role keep full access rather than getting locked out.
+
+export const ROLE = { ADMIN: "admin", SCORER: "scorer", LIVE: "live" };
+
+const SCORER_PAGES = ["current-matches.html", "court-scoring.html"];
+const LIVE_PAGE = "live-view.html";
+
+function currentPageFile() {
+  return window.location.pathname.split("/").pop() || "index.html";
+}
+
+/** Just the role, from an email — used by login.js to pick a landing page
+ *  before any page-guarding is relevant yet. */
+export async function fetchCurrentRole(email) {
+  const official = await fetchOfficialForEmail(email);
+  return official?.role || ROLE.ADMIN;
+}
+
+/** Where a just-signed-in (or already-signed-in) user should land. */
+export function landingPageForRole(role) {
+  if (role === ROLE.LIVE) return LIVE_PAGE;
+  if (role === ROLE.SCORER) return "current-matches.html";
+  return "home.html";
+}
+
+/** Call at the top of every protected page instead of requireAuth().
+ *  Ensures the user is signed in AND allowed on this specific page for
+ *  their role, redirecting them to where they belong otherwise. Returns
+ *  `{ user, role, official }` on success, or null if it redirected away
+ *  (in which case the rest of the page's script should do nothing further). */
+export async function guardPage() {
+  const user = await requireAuth();
+  if (!user) return null;
+
+  const official = await fetchOfficialForEmail(user.email);
+  const role = official?.role || ROLE.ADMIN;
+  const page = currentPageFile();
+
+  if (role === ROLE.LIVE && page !== LIVE_PAGE) {
+    window.location.href = LIVE_PAGE;
+    return null;
+  }
+  if (role === ROLE.SCORER && !SCORER_PAGES.includes(page)) {
+    window.location.href = "current-matches.html";
+    return null;
+  }
+
+  return { user, role, official };
+}

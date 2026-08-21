@@ -2,7 +2,7 @@
 // Mirrors ViewModels/ScoringViewModel.swift: best of 3 sets, sets 1-2 to 25
 // (deciding 3rd set to 15), win by 2. Undo Last Point / End Set / End Match.
 
-import { requireAuth } from "../auth.js";
+import { guardPage } from "../auth.js";
 import {
   fetchMatch,
   listenToScore,
@@ -13,7 +13,7 @@ import {
 } from "../firestore.js";
 import { getQueryParam, escapeHtml } from "../utils.js";
 
-await requireAuth();
+await guardPage();
 
 const matchDocId = getQueryParam("id");
 if (!matchDocId) {
@@ -84,7 +84,8 @@ function render() {
 }
 
 function dotsHtml(filled) {
-  return [0, 1, 2].map((i) => `<span class="set-dot ${i < filled ? "filled" : ""}"></span>`).join("");
+  // Best-of-3, 2 sets needed to win — 2 dots covers the full range.
+  return [0, 1].map((i) => `<span class="set-dot ${i < filled ? "filled" : ""}"></span>`).join("");
 }
 
 function targetPoints() {

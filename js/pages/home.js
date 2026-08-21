@@ -1,12 +1,14 @@
 // pages/home.js
-import { requireAuth, fetchOfficialForEmail } from "../auth.js";
+import { guardPage } from "../auth.js";
 import { listenToMatches, listenToLiveDisplayMatchIds, updateMatchStatus } from "../firestore.js";
 import { formatDate, formatTime, escapeHtml } from "../utils.js";
 
-const user = await requireAuth();
-if (user) {
-  const official = await fetchOfficialForEmail(user.email);
-  document.getElementById("greeting").textContent = `Good Morning, ${official?.first_name ?? "there"}`;
+// Home is admin-only (scorer/live get bounced elsewhere by guardPage before
+// any of this runs), but we still fall through to "if (session)" the same
+// way requireAuth()'s caller used to, for consistency.
+const session = await guardPage();
+if (session) {
+  document.getElementById("greeting").textContent = `Good Morning, ${session.official?.first_name ?? "there"}`;
 }
 
 const matchesListEl = document.getElementById("matches-list");
