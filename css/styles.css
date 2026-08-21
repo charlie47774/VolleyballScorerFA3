@@ -41,10 +41,16 @@ html, body {
 a {
   color: inherit;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
   font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a, button, .row-item.clickable, .court-card {
+  touch-action: manipulation;
 }
 
 /* ---------- Layout shells ---------- */
@@ -57,10 +63,18 @@ button {
 
 .page-content {
   flex: 1;
-  padding: 40px;
-  max-width: 1200px;
+  padding: clamp(20px, 3vw, 40px);
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
+}
+
+/* Give very large desktop monitors a bit more breathing room without
+   letting content get uncomfortably wide on a laptop or iPad. */
+@media (min-width: 1600px) {
+  .page-content {
+    max-width: 1440px;
+  }
 }
 
 .centered-page {
@@ -400,10 +414,36 @@ input:focus, select:focus, textarea:focus {
 .login-shell {
   display: flex;
   width: min(900px, 92vw);
+  max-height: 92vh;
   background: var(--color-card);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Short/narrow viewports (iPad portrait, small laptop windows) — stack
+   the branding panel above the form instead of squeezing both side by side. */
+@media (max-width: 700px), (max-height: 620px) {
+  .login-shell {
+    flex-direction: column;
+    width: min(480px, 92vw);
+    max-height: none;
+    overflow-y: auto;
+  }
+
+  .login-branding {
+    padding: 28px;
+  }
+
+  .login-branding .logo-circle {
+    width: 72px;
+    height: 72px;
+    font-size: 32px;
+  }
+
+  .login-form {
+    padding: 28px;
+  }
 }
 
 .login-branding {
@@ -482,6 +522,7 @@ input:focus, select:focus, textarea:focus {
 
 .home-nav {
   width: 280px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -490,6 +531,31 @@ input:focus, select:focus, textarea:focus {
 .matches-list-scroll {
   max-height: 480px;
   overflow-y: auto;
+}
+
+/* Tablet landscape and narrower: the sidebar no longer has room to sit
+   beside the matches card, so it becomes a wrapping row of pills above
+   it instead of a cramped narrow column. */
+@media (max-width: 900px) {
+  .home-grid {
+    flex-direction: column-reverse;
+  }
+
+  .home-main {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .home-nav {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .home-nav .btn {
+    flex: 1 1 calc(50% - 6px);
+  }
 }
 
 /* ---------- Court / scoring grid ---------- */
@@ -595,7 +661,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .scoring-panel .score {
-  font-size: 96px;
+  font-size: clamp(56px, 9vw, 96px);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -662,8 +728,17 @@ input:focus, select:focus, textarea:focus {
   position: fixed;
   inset: 0;
   display: flex;
-  gap: 24px;
-  padding: 32px;
+  gap: clamp(12px, 2vw, 24px);
+  padding: clamp(14px, 3vw, 32px);
+}
+
+/* If the window is taller than it is wide (e.g. iPad held in portrait, or
+   a Live View popup resized narrow), stack the cards instead of squashing
+   them side by side. */
+@media (orientation: portrait) {
+  .live-view-grid {
+    flex-direction: column;
+  }
 }
 
 .live-card {
